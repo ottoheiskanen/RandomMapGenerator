@@ -1,26 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class Window extends JFrame {
 
+    public ImageIcon resizeImage(String url) {
+        ImageIcon image = new ImageIcon(url);
+        Image tempImage = image.getImage().getScaledInstance(Main.gridSize, Main.gridSize, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon scaled_image = new ImageIcon(tempImage);
+        return scaled_image;
+    }
+
     public Window(int[][] mapArray) {
+
         //Grid
         JPanel grid = new JPanel();
         grid.setBackground(Color.black);
         grid.setLayout(new GridLayout(Main.mapHeight, Main.mapWidth));
 
-        ImageIcon tempBlock = new ImageIcon("src/img/block.png");
-        Image blockImage = tempBlock.getImage().getScaledInstance(Main.gridSize, Main.gridSize, java.awt.Image.SCALE_SMOOTH);
-        ImageIcon block = new ImageIcon(blockImage);
-
-        ImageIcon tempEmpty = new ImageIcon("src/img/empty.png");
-        Image emptyImage = tempEmpty.getImage().getScaledInstance(Main.gridSize, Main.gridSize, java.awt.Image.SCALE_SMOOTH);
-        ImageIcon empty = new ImageIcon(emptyImage);
-
-        ImageIcon tempEnemy = new ImageIcon("src/img/enemy.png");
-        Image enemyImage = tempEnemy.getImage().getScaledInstance(Main.gridSize, Main.gridSize, java.awt.Image.SCALE_SMOOTH);
-        ImageIcon enemy = new ImageIcon(enemyImage);
+        // Load object sprites
+        ImageIcon block = resizeImage("src/img/block.png");
+        ImageIcon empty = resizeImage("src/img/empty.png");
+        ImageIcon enemy = resizeImage("src/img/enemy.png");
 
         // Add blocks
         for (int i = 0; i < mapArray.length; i++) {
