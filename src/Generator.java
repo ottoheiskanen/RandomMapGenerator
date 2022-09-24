@@ -5,6 +5,7 @@ public class Generator {
     /* Recursion depth for adding more than one type of objects with multiple iterations
     and set of rules */
     public static int depth = 3;
+    public static int tiles = Main.mapArray.length * Main.mapArray[0].length;
     public static void printMap(int[][] map) {
         for (int i = 0; i < map.length; i++) {
             System.out.println(Arrays.toString(map[i]));
@@ -30,20 +31,34 @@ public class Generator {
     public static void weightedMap(int[][] mapArray, int lastRow, int lastCol) {
         float weight = randomWeight();
         System.out.println(depth);
-        for (int i = 0; i < mapArray.length; i++) {
-            //Block change
-            for (int j = 0; j < mapArray[i].length; j++) {
-                if (weight > 0.35) {   //0.25
-                    mapArray[i][j] = 1;
-                }
-                //Re-weighting
-                weight = revalueWeight(weight);
-            }
-            //Reset weight when row changes, multiplier to avoid empty starts
-            weight = randomWeight() * 10;
+        switch (depth) {
+            case 3:
+                for (int i = 0; i < mapArray.length; i++) {
+                    //Block change
+                    for (int j = 0; j < mapArray[i].length; j++) {
+                        if (weight > 0.35) {   //0.25
+                            mapArray[i][j] = 1;
+                        }
+                        //Re-weighting
+                        weight = revalueWeight(weight);
+                    }
+                    //Reset weight when row changes, multiplier to avoid empty starts
+                    weight = randomWeight() * 10;
+                }break;
+            case 2:
+                for (int i = 0; i < mapArray.length; i++) {
+                    for (int j = 0; j < mapArray[i].length; j++) {
+                        if ((weight < 0.01) & (mapArray[i][j] != 1)) {
+                            if ((mapArray[i+1][j] == 1) & i+1 <= lastRow-1) {
+                                mapArray[i][j] = 2;
+                            }
+                        }
+                        weight = randomWeight();
+                    }
+                }break;
         }
         depth--;
-        if (depth > 3) {
+        if (depth > 1) {
             weightedMap(mapArray, lastRow, lastCol);
         }
     }
